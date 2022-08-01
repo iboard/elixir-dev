@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if test -z "$PROJECT"
+  then
+    echo "STARTING IEX SHELL FOR PROJECT ${PROJECT || 'PLEASE PROVIDE ENV-VAR <PROJECT>'}"
+    exit 1
+fi
+
+WDIR=/home/elixir/app/$PROJECT
+echo "RUNNING CONTAINER IN '$PROJECT'"
+cd $WDIR
+SECRET_KEY_BASE=`mix phx.gen secret`
+mix phx.server
