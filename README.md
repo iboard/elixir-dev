@@ -4,6 +4,54 @@ _elixir-dev_ is a `Dockerfile` and a `docker-compose.yml` which runs an Elixi-/P
 developer environment in a Docker container. Only the source code is mounted/exposed to
 the developer's local workstation.
 
+## Usage
+
+### Windows 10 with GitBash
+
+### 1st Clone the Docker-project `elixir-dev`
+
+    ELIXIR_DEV_ROOT="<somewhere on the dev's workstation>"
+    cd $ELIXIR_DEV_ROOT
+    git clone git@github.com:iboard/elixir-dev.git
+    cd elixir-dev
+    
+### 2nd (inside .../elixir-dev directory)
+
+    # Optional
+    mkdir postgresql
+    
+### 3rd Setup your .env file and create src-path
+
+    SECRET_KEY_BASE=<a very long secret ... use mix phx.gen.secret
+    
+    mkdir src
+
+### 4th Build the Docker image
+
+    docker-compose build elixir-dev
+
+### 5th Create a new Phoenix project
+
+    docker-compose run --rm elixir-dev "mix phx.new --live --no-ecto hello"
+    
+edit `scr/hello/config/dev.ex` and change the endpoint's IP from 127.0.0.1 to 0.0.0.0
+thus the network is visible from your host system.
+    
+### 6th Start the development container
+
+    docker-compose up elixir-dev
+    
+The docker container should be running with console output in the foreground. You should be able to
+visit http://localhost:4000 and see your 'hello' Liveview up and running.
+
+### 6a Start the phoenix server in an IEX shell inside the container
+
+    PROJECT=hello docker-compose run --rm -p 4000:4000 elixir-dev "iex -S mix phx.server"
+    
+
+
+
+
 tbc ...
 
 Github-Issue
